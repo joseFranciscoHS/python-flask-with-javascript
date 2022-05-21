@@ -10,17 +10,17 @@ from matplotlib.figure import Figure
 
 app = Flask(__name__)
 app.secret_key = "s3cr3t"
-app.debug = False
+app.debug = True
 app._static_folder = os.path.abspath("templates/static/")
 
 
-@app.route("/", methods=["GET"])
+@app.route("/", methods=["POST"])
 def index():
     title = "Create the input image"
     return render_template("layouts/index.html", title=title)
 
 
-@app.route("/results/", methods=["GET"])
+@app.route("/result/", methods=["POST"])
 def results():
     title = "Results"
     datalist = []
@@ -29,14 +29,14 @@ def results():
     return render_template("layouts/results.html", title=title, datalist=datalist)
 
 
-@app.route("/results/<unique_id>", methods=["GET"])
+@app.route("/results/<unique_id>", methods=["POST"])
 def result_for_uuid(unique_id):
     title = "Result"
     data = get_file_content(get_file_name(unique_id))
     return render_template("layouts/result.html", title=title, data=data)
 
 
-@app.route("/postmethod", methods=["POST"])
+@app.route("/postmethods", methods=["POST"])
 def post_javascript_data():
     jsdata = request.form["canvas_data"]
     unique_id = create_csv(jsdata)
@@ -72,9 +72,9 @@ def get_file_name(unique_id):
 
 
 def get_file_content(filename):
-    with open(filename, "r") as file:
+    with open(filename, "rb", encoding="utf-8") as file:
         return file.read()
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)
