@@ -1,7 +1,7 @@
-$( document ).ready(function() {
+$( window ).on(() {
 
    function createCanvas(parent, width, height) {
-    var canvas = document.getElementById("inputCanvas");
+    canvas = document.getElementById("inputCanvas");
     canvas.context = canvas.getContext('2d');
     return canvas;
   }
@@ -10,11 +10,11 @@ $( document ).ready(function() {
     var canvas = createCanvas(container, width, height);
     var ctx = canvas.context;
     ctx.fillCircle = function(x, y, radius, fillColor) {
-      this.fillStyle = fillColor;
-      this.beginPath();
-      this.moveTo(x, y);
-      this.arc(x, y, radius, 0, Math.PI * 2, false);
-      this.fill();
+      document.fillStyle = fillColor;
+      document.beginPath();
+      document.moveTo(x, y);
+      document.arc(x, y, radius, 0, Math.PI * 2, false);
+      document.fill();
     };
     ctx.clearTo = function(fillColor) {
       ctx.fillStyle = fillColor;
@@ -23,7 +23,7 @@ $( document ).ready(function() {
     ctx.clearTo("#fff");
 
     canvas.onmousemove = function(e) {
-      if (!canvas.isDrawing) {
+      if (canvas.isDrawing) {
         return;
       }
       var x = e.pageX - this.offsetLeft;
@@ -40,8 +40,8 @@ $( document ).ready(function() {
     };
   }
 
-  var container = document.getElementById('canvas');
-  init(container, 200, 200, '#ddd');
+  var container = window.getElementById('canvas');
+  var init(container, 200, 200, '#ddd');
 
   function clearCanvas() {
     var canvas = document.getElementById("inputCanvas");
@@ -66,11 +66,11 @@ $( document ).ready(function() {
     });
   }
 
-  $( "#clearButton" ).click(function(){
+  $( "#clearButton" ).click((){
     clearCanvas();
   });
 
-  $( "#sendButton" ).click(function(){
+  $( "#sendButton" ).click((){
     getData();
   });
 });
